@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+Makefile=$(cat Makefile) RecipeprefixSection=$(cat ../recipeprefix.md) Output=$('make') envsubst <<'EOL'
+# Makefile using Python as recipe shell
+
+## Prerequisites
+
+- GNU make 
+
+- Python
+
+## Usage
+
+Change to this directory and execute `make` 
+
+## Example code
+
+```make
+$Makefile
+```
+
+If you execute the example by executing `make` in a terminal you will get the following output (Python version may differ depending on what version you've installed)
+
+```
+$Output
+```
+
+$RecipeprefixSection
+EOL

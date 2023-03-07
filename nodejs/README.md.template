@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+Makefile=$(cat Makefile) RecipeprefixSection=$(cat ../recipeprefix.md) Output=$('make') envsubst <<'EOL'
+# Makefile using Nodejs as recipe shell
+
+## Prerequisites
+
+- GNU make 
+
+- NodeJS
+
+  The example Makefile uses module syntax which is a relatively new NodeJS feature. I tested the Makefile using NodeJS 18.8 
+
+You could even use [Deno](https://deno.land/) or [Bun](https://bun.sh/) instead of NodeJS if you feel more comfortable with [TypeScript](https://www.typescriptlang.org/). 
+
+## Usage
+
+Change to this directory and execute `make` 
+
+## Example code
+
+```make
+$Makefile
+```
+
+If you execute the example by executing `make` in a terminal you will get the following output (NodeJS version may differ depending on what version you've installed)
+
+```
+$Output
+```
+
+$RecipeprefixSection
+EOL
