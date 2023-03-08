@@ -8,10 +8,10 @@ SHELL != sh -c "command -v sqlite3"
 # => from now on every shell invocation by make will be sqlite
 
 # .ONESHELL tells make to execute a target recipe as a single SHELL call
-# (by default make would execute a receipt line by line in separate SHELL calls
+# (by default make would execute a recipe line by line in separate SHELL calls
 .ONESHELL:
 
-# et voilà : receipts can now be written in pure sqlite syntax :-)
+# et voilà : recipes can now be written in pure sqlite syntax :-)
 all: create insert import report
 	.print "# target name is '$@', depends on '$^'\n"
 
@@ -44,8 +44,8 @@ create:
 		(id INTEGER PRIMARY KEY AUTOINCREMENT, name STRING, familyname STRING)
 
 clean:
-	DROP TABLE IF EXISTS foo
-	DROP TABLE IF EXISTS data
+	DROP TABLE IF EXISTS foo;
+	DROP TABLE IF EXISTS data;
 
 # tell make that these targets are NOT meant to be files/directories
 .PHONY: all create insert import clean import import_data merge_data

@@ -1,15 +1,50 @@
 #!/usr/bin/env bash
-RecipeprefixSection=$(cat recipeprefix.md) envsubst <<'EOL'
+sqliteMakefile=$(cat sqlite/Makefile) nodejsMakefile=$(cat nodejs/Makefile) pythonMakefile=$(cat python/Makefile) RecipeprefixSection=$(cat recipeprefix.md) envsubst <<'EOL'
 # Makefile recipes in various languages
 
-Using make does not mean that you have to learn shell scripting (altough it's always a good idea to have at least basic knowledge about it).
+Using make does not mean that you have to learn shell scripting 
+(although it's always a good idea to have at least basic knowledge about it).
 
+__The important point is : You can use almost any scripting language for make recipes, not just shell scripts !__ 
 
-__You can use almost any scripting language for make recipes !__ 
+Thats how a Makefile looks using NodeJS as make `SHELL` : 
 
-@TODO: add note about linux philosophy (one toll - one job) => and so works make
+```make
+$nodejsMakefile
+```
 
-@TODO: SHELL / .SHELLFLAGS configuration
+Do you prefer Python ? Yes, it's possible ! 
+
+```make
+$pythonMakefile
+```
+
+How about something special ... let's say we want use SQL (SQLite in this case) as make SHELL:
+```make
+$sqliteMakefile
+```
+
+Make is a tool following the classic Unix philosophy : 
+
+> Make each program do one thing well.
+
+Make does 
+
+- resolve tasks (aka targets) and their dependencies
+
+- execute target recipe if a target is not build/out-of-date
+
+The recipe target can be written in whatever scripting language you want. 
+
+It is configurable using make variables `SHELL` and `.SHELLFLAGS`
+
+## configuration 
+
+- make takes the `SHELL` defined in your makefile for executing target recipes. 
+
+  make will replace all [make variables](https://ftp.gnu.org/old-gnu/Manuals/make-3.79.1/html_chapter/make_6.html) used in a target recipe before delegating them to the declared `SHELL`
+
+- the `.SHELLFLAGS` directive can be used to customize the commandline parameters used for SHELL execution.
 
 ## Examples
 
@@ -23,13 +58,27 @@ __If you have some more ideas to showcase - create a pull request !__
 
 ### Usage
 
-The execute them 
+The execute an example
 
 - `cd` into the desired example directory
 
 - execute `make`
 
-@TODO: add some more make settings we feel comforgtable with
+# Some more helpful `make` settings
+
+- `.ONESHELL` tells make to execute target recipe lines in a single SHELL invocation. 
+  That is what most people want !
+
+  _By default, every recipe line would be executed in a separate SHELL call._
+
+- `MAKEFLAGS` can be used to customize make behaviour. 
+  I personally prefer to set `MAKEFLAGS+=--no-builtin-rules --no-builtin-variables` disable stone age old buil-tin rules/variables of make dedicated to c/c++ development of the eighties.
+  
+  - `--no-builtin-variables` tells make to not create out of the box variables like $(CC), $(YACC) and stuff
+
+  - `--no-builtin-rules` tells make to not create c/c++ standard rules for targeting yacc/c/cc++ files 
+
+- `.SECONDEXPANSION` is pure magic. It makes make target dependencies dynamic. Read more here : https://www.cmcrossroads.com/article/making-directories-gnu-make
 
 $RecipeprefixSection
 EOL
