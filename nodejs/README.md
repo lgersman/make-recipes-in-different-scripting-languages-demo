@@ -58,6 +58,8 @@ node version is  v18.8.0
 [
   '.git',
   'LICENSE',
+  'README.md',
+  'README.md.template',
   'build.sh',
   'nodejs',
   'python',

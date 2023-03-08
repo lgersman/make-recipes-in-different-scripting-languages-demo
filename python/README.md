@@ -26,7 +26,7 @@ SHELL != sh -c "command -v python"
 # (by default make would execute a receipt line by line in separate SHELL calls
 .ONESHELL:
 
-# et voilà : the receipt can now be written in plain modern javascript :-)
+# et voilà : the receipt can now be written in pure python :-)
 all: foo	
 	# use some make variables
 	print "# target name is '$@', depends on '$^'"
@@ -51,7 +51,7 @@ If you execute the example by executing `make` in a terminal you will get the fo
 # target name is 'foo', depends on ''
 python version is 2.7.18
 # target name is 'all', depends on 'foo'
-['recipeprefix.md', 'python', 'sqlite', '.git', 'nodejs', 'build.sh', 'LICENSE']
+['README.md', 'recipeprefix.md', 'python', 'sqlite', '.git', 'nodejs', 'README.md.template', 'build.sh', 'LICENSE']
 ```
 
 # Opinionated tip: use `.RECIPEPREFIX`

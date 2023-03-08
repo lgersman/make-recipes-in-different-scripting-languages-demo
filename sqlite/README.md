@@ -1,5 +1,11 @@
 # Makefile using SQLite3 as recipe shell
 
+Sounds strange but ... why not use SQL as recipe ? 
+
+This Makefile is a fully working proof of concept utilizing sqlite3. 
+
+Please note that one of the major features of make - do only execute targets with updated dependencies - are mostly skipped by this proof.
+
 ## Prerequisites
 
 - GNU make 
@@ -8,7 +14,13 @@
 
 ## Usage
 
-Change to this directory and execute `make` 
+Change to this directory and execute 
+
+- `make` to populate the database 
+
+- `make clean` to clean up the database 
+
+- `rm db.sqlite3` to remove the database file completely
 
 ## Example code
 
@@ -19,23 +31,29 @@ MAKEFLAGS += --silent
 # make sqlite the "shell" for make recipes
 SHELL != sh -c "command -v sqlite3"
 # empty default shell commandline options to apply for shell invocation
-.SHELLFLAGS := db.sqlite3
+.SHELLFLAGS := -bail -separator ; -batch -header db.sqlite3 
 # => from now on every shell invocation by make will be sqlite
 
 # .ONESHELL tells make to execute a target recipe as a single SHELL call
 # (by default make would execute a receipt line by line in separate SHELL calls
 .ONESHELL:
 
-# et voilà : the receipt can now be written in plain modern javascript :-)
-all: insert import	
-	.mode column
-	SELECT * FROM foo;
-	SELECT * FROM imported;
+# et voilà : receipts can now be written in pure sqlite syntax :-)
+all: create insert import report
+	.print "# target name is '$@', depends on '$^'\n"
 
-import: create data.csv
-	.mode csv
-	.separator ;
-	.import ./data.csv foo
+report: 
+	SELECT * FROM foo
+
+merge_data: import_data
+	INSERT INTO foo(name, familyname) 
+		SELECT * FROM data;
+	DROP TABLE IF EXISTS data
+
+import_data: create data.csv 
+	.import data.csv data
+	
+import: import_data merge_data;
 
 insert: create
 	INSERT INTO foo 
@@ -44,22 +62,83 @@ insert: create
 		('Erika', 'Mustermann'),
 		('Max', 'Mustermann');
 
-	INSERT INTO foo (name, familyname) VALUES ('John', 'Doe');
+	INSERT INTO foo (name, familyname) VALUES ('John', 'Doe')
 
 create: 
-	CREATE TABLE IF NOT EXISTS foo (id INTEGER PRIMARY KEY AUTOINCREMENT, name STRING, familyname STRING);
+	CREATE TABLE 
+		IF NOT EXISTS 
+	foo 
+		(id INTEGER PRIMARY KEY AUTOINCREMENT, name STRING, familyname STRING)
 
 clean:
-	DROP TABLE IF EXISTS foo;
+	DROP TABLE IF EXISTS foo
+	DROP TABLE IF EXISTS data
 
 # tell make that these targets are NOT meant to be files/directories
-.PHONY: all create insert import clean
+.PHONY: all create insert import clean import import_data merge_data
 ```
 
 If you execute the example by executing `make` in a terminal you will get the following output (SQLite3 version may differ depending on what version you've installed)
 
 ```
-
+id;name;familyname
+1;Erika;Mustermann
+2;Max;Mustermann
+3;John;Doe
+4;Martina;Musterfrau
+5;Susanne;Muster
+6;Maria;Musterfrau
+7;Manu;Musterperson
+8;Erika;Mustermann
+9;Max;Mustermann
+10;John;Doe
+11;Martina;Musterfrau
+12;Susanne;Muster
+13;Maria;Musterfrau
+14;Manu;Musterperson
+15;Erika;Mustermann
+16;Max;Mustermann
+17;John;Doe
+18;Martina;Musterfrau
+19;Susanne;Muster
+20;Maria;Musterfrau
+21;Manu;Musterperson
+22;Erika;Mustermann
+23;Max;Mustermann
+24;John;Doe
+25;Martina;Musterfrau
+26;Susanne;Muster
+27;Maria;Musterfrau
+28;Manu;Musterperson
+29;Erika;Mustermann
+30;Max;Mustermann
+31;John;Doe
+32;Martina;Musterfrau
+33;Susanne;Muster
+34;Maria;Musterfrau
+35;Manu;Musterperson
+36;Erika;Mustermann
+37;Max;Mustermann
+38;John;Doe
+39;Martina;Musterfrau
+40;Susanne;Muster
+41;Maria;Musterfrau
+42;Manu;Musterperson
+43;Erika;Mustermann
+44;Max;Mustermann
+45;John;Doe
+46;Martina;Musterfrau
+47;Susanne;Muster
+48;Maria;Musterfrau
+49;Manu;Musterperson
+50;Erika;Mustermann
+51;Max;Mustermann
+52;John;Doe
+53;Martina;Musterfrau
+54;Susanne;Muster
+55;Maria;Musterfrau
+56;Manu;Musterperson
+# target name is 'all', depends on 'create insert import report'
 ```
 
 # Opinionated tip: use `.RECIPEPREFIX`

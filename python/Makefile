@@ -11,7 +11,7 @@ SHELL != sh -c "command -v python"
 # (by default make would execute a receipt line by line in separate SHELL calls
 .ONESHELL:
 
-# et voilà : the receipt can now be written in plain modern javascript :-)
+# et voilà : the receipt can now be written in pure python :-)
 all: foo	
 	# use some make variables
 	print "# target name is '$@', depends on '$^'"

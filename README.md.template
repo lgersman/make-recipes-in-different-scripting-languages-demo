@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+RecipeprefixSection=$(cat recipeprefix.md) envsubst <<'EOL'
+# Makefile recipes in various languages
+
+Using make does not mean that you have to learn shell scripting (altough it's always a good idea to have at least basic knowledge about it).
+
+
+__You can use almost any scripting language for make recipes !__ 
+
+@TODO: add note about linux philosophy (one toll - one job) => and so works make
+
+@TODO: SHELL / .SHELLFLAGS configuration
+
+## Examples
+
+This repo provides some examples using make with pure 
+
+- NodeJS
+- Python
+- SQLite3
+
+__If you have some more ideas to showcase - create a pull request !__
+
+### Usage
+
+The execute them 
+
+- `cd` into the desired example directory
+
+- execute `make`
+
+@TODO: add some more make settings we feel comforgtable with
+
+$RecipeprefixSection
+EOL

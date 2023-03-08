@@ -2,6 +2,12 @@
 Makefile=$(cat Makefile) RecipeprefixSection=$(cat ../recipeprefix.md) Output=$('make') envsubst <<'EOL'
 # Makefile using SQLite3 as recipe shell
 
+Sounds strange but ... why not use SQL as recipe ? 
+
+This Makefile is a fully working proof of concept utilizing sqlite3. 
+
+Please note that one of the major features of make - do only execute targets with updated dependencies - are mostly skipped by this proof.
+
 ## Prerequisites
 
 - GNU make 
@@ -10,7 +16,13 @@ Makefile=$(cat Makefile) RecipeprefixSection=$(cat ../recipeprefix.md) Output=$(
 
 ## Usage
 
-Change to this directory and execute `make` 
+Change to this directory and execute 
+
+- `make` to populate the database 
+
+- `make clean` to clean up the database 
+
+- `rm db.sqlite3` to remove the database file completely
 
 ## Example code
 
