@@ -164,6 +164,7 @@ clean:
 # tell make that these targets are NOT meant to be files/directories
 .PHONY: all create insert import clean import import_data merge_data
 ```
+---
 
 Make is a tool following the classic Unix philosophy : 
 
