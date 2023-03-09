@@ -49,7 +49,7 @@ foo:
 .PHONY: all foo
 ```
 
-If you execute the example by executing `make` in a terminal you will get the following output (NodeJS version may differ depending on what version you've installed)
+If you run the example by executing `make` in a terminal you will get the following output (NodeJS version may differ depending on what version you've installed)
 
 ```
 # target name is 'foo', depends on ''
@@ -62,6 +62,7 @@ node version is  v18.8.0
   'README.md.template',
   'build.sh',
   'nodejs',
+  'php',
   'python',
   'recipeprefix.md',
   'sqlite'

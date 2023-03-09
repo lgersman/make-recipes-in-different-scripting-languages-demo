@@ -45,13 +45,13 @@ foo:
 .PHONY: all foo
 ```
 
-If you execute the example by executing `make` in a terminal you will get the following output (Python version may differ depending on what version you've installed)
+If you run the example by executing `make` in a terminal you will get the following output (Python version may differ depending on what version you've installed)
 
 ```
 # target name is 'foo', depends on ''
 python version is 2.7.18
 # target name is 'all', depends on 'foo'
-['nodejs', 'build.sh', 'LICENSE', 'README.md', 'recipeprefix.md', '.git', 'python', 'sqlite', 'README.md.template']
+['nodejs', 'build.sh', 'LICENSE', 'README.md', 'recipeprefix.md', 'php', '.git', 'python', 'sqlite', 'README.md.template']
 ```
 
 # Opinionated tip: use `.RECIPEPREFIX`

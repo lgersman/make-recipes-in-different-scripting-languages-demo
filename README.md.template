@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-sqliteMakefile=$(cat sqlite/Makefile) nodejsMakefile=$(cat nodejs/Makefile) pythonMakefile=$(cat python/Makefile) RecipeprefixSection=$(cat recipeprefix.md) envsubst <<'EOL'
+phpMakefile=$(cat php/Makefile) sqliteMakefile=$(cat sqlite/Makefile) nodejsMakefile=$(cat nodejs/Makefile) pythonMakefile=$(cat python/Makefile) RecipeprefixSection=$(cat recipeprefix.md) envsubst <<'EOL'
 # Makefile recipes in various languages
 
 Using make does not mean that you have to learn shell scripting 
@@ -7,19 +7,26 @@ Using make does not mean that you have to learn shell scripting
 
 __The important point is : You can use almost any scripting language for make recipes, not just shell scripts !__ 
 
-Thats how a Makefile looks using NodeJS as make `SHELL` : 
+- Thats how a Makefile looks using NodeJS as make `SHELL` : 
 
 ```make
 $nodejsMakefile
 ```
 
-Do you prefer Python ? Yes, it's possible ! 
+- Do you prefer Python ? Yes, it's possible ! 
 
 ```make
 $pythonMakefile
 ```
 
-How about something special ... let's say we want use SQL (SQLite in this case) as make SHELL:
+- What about PHP ? Yes, you can : 
+
+```make
+$phpMakefile
+```
+
+- How about something special ... let's say we want use SQL (SQLite in this case) as make SHELL:
+
 ```make
 $sqliteMakefile
 ```

@@ -5,7 +5,7 @@ Using make does not mean that you have to learn shell scripting
 
 __The important point is : You can use almost any scripting language for make recipes, not just shell scripts !__ 
 
-Thats how a Makefile looks using NodeJS as make `SHELL` : 
+- Thats how a Makefile looks using NodeJS as make `SHELL` : 
 
 ```make
 # suppress verbose make output
@@ -40,7 +40,7 @@ foo:
 .PHONY: all foo
 ```
 
-Do you prefer Python ? Yes, it's possible ! 
+- Do you prefer Python ? Yes, it's possible ! 
 
 ```make
 # suppress verbose make output
@@ -75,7 +75,42 @@ foo:
 .PHONY: all foo
 ```
 
-How about something special ... let's say we want use SQL (SQLite in this case) as make SHELL:
+- What about PHP ? Yes, you can : 
+
+```make
+# suppress verbose make output
+MAKEFLAGS += --silent
+
+# make php the "shell" for make recipes
+SHELL != sh -c "command -v php"
+# tell php within make to take the following as php code
+.SHELLFLAGS := -r
+# => from now on every shell invocation by make will be php
+
+# .ONESHELL tells make to execute a target recipe as a single SHELL call
+# (by default make would execute a recipe line by line in separate SHELL calls
+.ONESHELL:
+
+# et voilà : the recipe can now be written in pure php :-)
+all: foo	
+	# use some make variables
+	echo PHP_EOL . "# target name is '$@', depends on '$^'";
+
+	print_r(glob('../*'));
+
+foo:
+	# to use variables, escape the $ with a second $ like this
+	$$greetings= 'world';
+	printf("Hello, %s!\n", $$greetings);
+
+	echo 'PHP version is '. phpversion() . PHP_EOL;
+
+# tell make that these targets are NOT meant to be files/directories
+.PHONY: all foo
+```
+
+- How about something special ... let's say we want use SQL (SQLite in this case) as make SHELL:
+
 ```make
 # suppress verbose make output
 MAKEFLAGS += --silent

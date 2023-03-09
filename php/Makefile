@@ -1,4 +1,3 @@
-
 # suppress verbose make output
 MAKEFLAGS += --silent
 
@@ -13,16 +12,18 @@ SHELL != sh -c "command -v php"
 .ONESHELL:
 
 # et voilà : the recipe can now be written in pure php :-)
-all: hello info	
+all: foo	
+	# use some make variables
+	echo PHP_EOL . "# target name is '$@', depends on '$^'";
 
-hello:
+	print_r(glob('../*'));
+
+foo:
 	# to use variables, escape the $ with a second $ like this
 	$$greetings= 'world';
-	printf('Hello, %s!', $$greetings);
+	printf("Hello, %s!\n", $$greetings);
 
-info:
-	phpinfo();
-	
+	echo 'PHP version is '. phpversion() . PHP_EOL;
 
 # tell make that these targets are NOT meant to be files/directories
-.PHONY: all hello info
+.PHONY: all foo

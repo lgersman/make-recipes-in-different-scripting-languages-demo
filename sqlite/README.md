@@ -78,7 +78,7 @@ clean:
 .PHONY: all create insert import clean import import_data merge_data
 ```
 
-If you execute the example by executing `make` in a terminal you will get the following output (SQLite3 version may differ depending on what version you've installed)
+If you run the example by executing `make` in a terminal you will get the following output (SQLite3 version may differ depending on what version you've installed)
 
 ```
 id;name;familyname
