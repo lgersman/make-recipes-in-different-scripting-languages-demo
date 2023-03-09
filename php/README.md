@@ -1,6 +1,6 @@
 # Makefile using PHP as recipe shell
 
-__This example was contributed by [Thomas Rose/codeispoetry](https://github.com/codeispoetry)__
+_This example was contributed by [Thomas Rose/codeispoetry](https://github.com/codeispoetry)._
 
 ## Prerequisites
 
