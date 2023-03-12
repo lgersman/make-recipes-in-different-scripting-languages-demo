@@ -55,14 +55,13 @@ PHP version is 8.2.3
 # target name is 'all', depends on 'foo'Array
 (
     [0] => ../LICENSE
-    [1] => ../README.md
-    [2] => ../README.md.template
-    [3] => ../build.sh
-    [4] => ../nodejs
-    [5] => ../php
-    [6] => ../python
-    [7] => ../recipeprefix.md
-    [8] => ../sqlite
+    [1] => ../README.md.template
+    [2] => ../build.sh
+    [3] => ../nodejs
+    [4] => ../php
+    [5] => ../python
+    [6] => ../recipeprefix.md
+    [7] => ../sqlite
 )
 ```
 

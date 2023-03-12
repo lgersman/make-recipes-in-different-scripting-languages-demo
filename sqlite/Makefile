@@ -1,10 +1,13 @@
 # suppress verbose make output
 MAKEFLAGS += --silent
 
+# sqlite database file name
+DB := db.sqlite3
+
 # make sqlite the "shell" for make recipes
-SHELL != sh -c "command -v sqlite3"
+SHELL = ./sqlite-shell.sh
 # empty default shell commandline options to apply for shell invocation
-.SHELLFLAGS := -bail -separator ; -batch -header db.sqlite3 
+.SHELLFLAGS = sqlite3 $(DB) 
 # => from now on every shell invocation by make will be sqlite
 
 # .ONESHELL tells make to execute a target recipe as a single SHELL call
@@ -12,21 +15,19 @@ SHELL != sh -c "command -v sqlite3"
 .ONESHELL:
 
 # et voilà : recipes can now be written in pure sqlite syntax :-)
-all: create insert import report
+all: create insert import
 	.print "# target name is '$@', depends on '$^'\n"
+	.headers ON
+	.mode columns
+	SELECT * FROM foo;
 
-report: 
-	SELECT * FROM foo
-
-merge_data: import_data
+import: create data.csv
+	.print "# target name is '$@', depends on '$^'\n"
+	.separator ;
+	.import data.csv data
 	INSERT INTO foo(name, familyname) 
 		SELECT * FROM data;
-	DROP TABLE IF EXISTS data
-
-import_data: create data.csv 
-	.import data.csv data
-	
-import: import_data merge_data;
+	DROP TABLE IF EXISTS data;
 
 insert: create
 	INSERT INTO foo 
@@ -35,17 +36,17 @@ insert: create
 		('Erika', 'Mustermann'),
 		('Max', 'Mustermann');
 
-	INSERT INTO foo (name, familyname) VALUES ('John', 'Doe')
+	INSERT INTO foo (name, familyname) VALUES ('John', 'Doe');
 
-create: 
+create: clean
 	CREATE TABLE 
 		IF NOT EXISTS 
 	foo 
-		(id INTEGER PRIMARY KEY AUTOINCREMENT, name STRING, familyname STRING)
+		(id INTEGER PRIMARY KEY AUTOINCREMENT, name STRING, familyname STRING);
 
 clean:
 	DROP TABLE IF EXISTS foo;
 	DROP TABLE IF EXISTS data;
 
 # tell make that these targets are NOT meant to be files/directories
-.PHONY: all create insert import clean import import_data merge_data
+.PHONY: all create insert import clean import

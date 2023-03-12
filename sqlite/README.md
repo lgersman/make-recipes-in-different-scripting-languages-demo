@@ -24,14 +24,19 @@ Change to this directory and execute
 
 ## Example code
 
+The Makefile:
+
 ```make
 # suppress verbose make output
 MAKEFLAGS += --silent
 
+# sqlite database file name
+DB := db.sqlite3
+
 # make sqlite the "shell" for make recipes
-SHELL != sh -c "command -v sqlite3"
+SHELL = ./sqlite-shell.sh
 # empty default shell commandline options to apply for shell invocation
-.SHELLFLAGS := -bail -separator ; -batch -header db.sqlite3 
+.SHELLFLAGS = sqlite3 $(DB) 
 # => from now on every shell invocation by make will be sqlite
 
 # .ONESHELL tells make to execute a target recipe as a single SHELL call
@@ -39,21 +44,19 @@ SHELL != sh -c "command -v sqlite3"
 .ONESHELL:
 
 # et voilà : recipes can now be written in pure sqlite syntax :-)
-all: create insert import report
+all: create insert import
 	.print "# target name is '$@', depends on '$^'\n"
+	.headers ON
+	.mode columns
+	SELECT * FROM foo;
 
-report: 
-	SELECT * FROM foo
-
-merge_data: import_data
+import: create data.csv
+	.print "# target name is '$@', depends on '$^'\n"
+	.separator ;
+	.import data.csv data
 	INSERT INTO foo(name, familyname) 
 		SELECT * FROM data;
-	DROP TABLE IF EXISTS data
-
-import_data: create data.csv 
-	.import data.csv data
-	
-import: import_data merge_data;
+	DROP TABLE IF EXISTS data;
 
 insert: create
 	INSERT INTO foo 
@@ -62,34 +65,57 @@ insert: create
 		('Erika', 'Mustermann'),
 		('Max', 'Mustermann');
 
-	INSERT INTO foo (name, familyname) VALUES ('John', 'Doe')
+	INSERT INTO foo (name, familyname) VALUES ('John', 'Doe');
 
-create: 
+create: clean
 	CREATE TABLE 
 		IF NOT EXISTS 
 	foo 
-		(id INTEGER PRIMARY KEY AUTOINCREMENT, name STRING, familyname STRING)
+		(id INTEGER PRIMARY KEY AUTOINCREMENT, name STRING, familyname STRING);
 
 clean:
 	DROP TABLE IF EXISTS foo;
 	DROP TABLE IF EXISTS data;
 
 # tell make that these targets are NOT meant to be files/directories
-.PHONY: all create insert import clean import import_data merge_data
+.PHONY: all create insert import clean import
+```
+
+The Shellwrapper file (`sqlite-shell.sh`)
+
+```shell
+#!/bin/env bash
+# A bash utility script which pipes its last argument to a
+# process gained by executing all but its last argument.  Useful in
+# Makefiles where you want the recipes to appear on stdin of some
+# command other than the usual bash shell.  For example, to write
+# recipes in sqlite3 (allowing dot-commands), include the following in your 
+# Makefile:
+#   SHELL:=sqlite-shell.sh
+#   .SHELLFLAGS:=sqlite3 $(DB)
+#   .ONESHELL:
+# 
+# see https://mail.gnu.org/archive/html/help-make/2015-05/msg00017.html
+# 
+cat <<< "${@:$#}" | "${@:1:$(($# - 1))}"
 ```
 
 If you run the example by executing `make` in a terminal you will get the following output (SQLite3 version may differ depending on what version you've installed)
 
 ```
-id;name;familyname
-1;Erika;Mustermann
-2;Max;Mustermann
-3;John;Doe
-4;Martina;Musterfrau
-5;Susanne;Muster
-6;Maria;Musterfrau
-7;Manu;Musterperson
-# target name is 'all', depends on 'create insert import report'
+# target name is 'import', depends on 'create data.csv'
+
+# target name is 'all', depends on 'create insert import'
+
+id          name        familyname
+----------  ----------  ----------
+1           Erika       Mustermann
+2           Max         Mustermann
+3           John        Doe       
+4           Martina     Musterfrau
+5           Susanne     Muster    
+6           Maria       Musterfrau
+7           Manu        Musterpers
 ```
 
 # Opinionated tip: use `.RECIPEPREFIX`

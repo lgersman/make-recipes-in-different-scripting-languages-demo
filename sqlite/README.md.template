@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-Makefile=$(cat Makefile) RecipeprefixSection=$(cat ../recipeprefix.md) Output=$('make') envsubst <<'EOL'
+Makefile=$(cat Makefile) SQLiteShell=$(cat sqlite-shell.sh) RecipeprefixSection=$(cat ../recipeprefix.md) Output=$('make') envsubst <<'EOL'
 # Makefile using SQLite3 as recipe shell
 
 Sounds strange but ... why not use SQL as recipe ? 
@@ -26,8 +26,16 @@ Change to this directory and execute
 
 ## Example code
 
+The Makefile:
+
 ```make
 $Makefile
+```
+
+The Shellwrapper file (`sqlite-shell.sh`)
+
+```shell
+$SQLiteShell
 ```
 
 If you run the example by executing `make` in a terminal you will get the following output (SQLite3 version may differ depending on what version you've installed)
