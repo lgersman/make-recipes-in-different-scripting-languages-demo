@@ -50,18 +50,20 @@ If you run the example by executing `make` in a terminal you will get the follow
 
 ```
 Hello, world!
-PHP version is 8.2.3
+PHP version is 8.2.4
 
 # target name is 'all', depends on 'foo'Array
 (
     [0] => ../LICENSE
-    [1] => ../README.md.template
-    [2] => ../build.sh
-    [3] => ../nodejs
-    [4] => ../php
-    [5] => ../python
-    [6] => ../recipeprefix.md
-    [7] => ../sqlite
+    [1] => ../README.md
+    [2] => ../README.md.template
+    [3] => ../build.sh
+    [4] => ../make
+    [5] => ../nodejs
+    [6] => ../php
+    [7] => ../python
+    [8] => ../recipeprefix.md
+    [9] => ../sqlite
 )
 ```
 

@@ -51,7 +51,7 @@ If you run the example by executing `make` in a terminal you will get the follow
 # target name is 'foo', depends on ''
 python version is 2.7.18
 # target name is 'all', depends on 'foo'
-['recipeprefix.md', 'python', 'php', 'sqlite', '.git', 'nodejs', 'README.md.template', 'build.sh', 'LICENSE']
+['README.md', 'recipeprefix.md', 'python', 'php', 'sqlite', '.git', 'nodejs', 'README.md.template', 'build.sh', 'LICENSE', 'make']
 ```
 
 # Opinionated tip: use `.RECIPEPREFIX`
