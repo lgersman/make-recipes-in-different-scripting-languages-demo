@@ -41,7 +41,7 @@ Makefile:xx: *** missing separator.  Stop.
 
 ## Solution
 
-A solution to workaround that potential issue is to change the recipse prefix to something different : 
+A solution to workaround that potential issue is to change the recipe prefix to something different : 
 
 ```make
 # tell make to use '>' as recipe prefix
