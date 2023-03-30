@@ -196,6 +196,8 @@ This repo provides some examples using make with pure
 - NodeJS
 - Python
 - SQLite3
+- PHP
+- and even make in make 🤯
 
 __If you have some more ideas to showcase - create a pull request !__
 
