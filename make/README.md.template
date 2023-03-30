@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+Makefile=$(cat Makefile) MakeShell=$(cat make-shell.sh) RecipeprefixSection=$(cat ../recipeprefix.md) Output=$('make') envsubst <<'EOL'
+# Makefile using make as recipe shell
+
+Just had to try.
+
+## Prerequisites
+
+- GNU make 
+
+## Usage
+
+Change to this directory and execute 
+
+- `make` to populate the database 
+
+## Example code
+
+The Makefile:
+
+```make
+$Makefile
+```
+
+The make wrapper file (`make-shell.sh`)
+
+```shell
+$MakeShell
+```
+
+If you run the example by executing `make` in a terminal you will get an greeting from makemake.
+
+```
+$Output
+```
+
+$RecipeprefixSection
+EOL
